@@ -138,7 +138,7 @@ to 0 to disable this feature, and set an expiration of something like 2 hours an
 of 10 minutes. This means the hard limit or the time the session will be destroyed no matter
 what is 2 hours, and the soft limit or the time a user can be inactive for is 10 minutes. 
 
-### More protections measures with Nginx
+### More protection measures with Nginx
 
 You can also apply the following headers to your nginx configuration for
 improving security. Please read the documentation of those headers before
@@ -159,5 +159,20 @@ add_header X-Frame-Options "SAMEORIGIN";
 # Block pages from loading when they detect reflected XSS attacks.
 add_header X-XSS-Protection "1; mode=block";
 ```
+
+### More general protection measures
+
+#### TOTP Hashing Algorithm 
+
+The TOTP hashing algorithm can be changed making the tokens generated are more
+resistent to collision attacks. However there is very sparse support for anything
+other than sha1 at this time, so changing this is not recommended. You should 
+thoroughly test your authenticator app that your users use before enabling this.
+
+At the time of writing this section Google Authenticator DOES NOT support anything other
+than sha1, even though it will scan the QR codes successfully, when it generates the
+token it uses sha1, thus it generates invalid tokens.
+
+See the [docs](../configuration/one-time-password.md) for more information.
 
 [HSTS]: https://www.nginx.com/blog/http-strict-transport-security-hsts-and-nginx/

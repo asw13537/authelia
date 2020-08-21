@@ -16,6 +16,7 @@ totp:
   issuer: authelia.com
   period: 30
   skew: 1
+  algorithm: sha1
 ```
 
         
@@ -54,3 +55,11 @@ For example the default of 1 has a total of 3 keys valid. A value of 2 has 5 one
 valid.
 
 It is recommended to keep this value set to 0 or 1, the minimum is 0.
+
+
+## Algorithm
+
+Configures the algorithm for token generation. Most authenticator apps only support sha1, however Authelia
+supports sha1, sha256, and sha512. This only affects newly generated tokens if changed. It is important
+to note, that allegedly the most popular authenticator app Google Authenticator, silently ignores this
+incompatibility and just generates invalid codes (doesn't respect the  algorithm at all).

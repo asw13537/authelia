@@ -56,6 +56,10 @@ totp:
   # Warning: before changing skew read the docs link below.
   skew: 1
   #  See: https://docs.authelia.com/configuration/one-time-password.html#period-and-skew to read the documentation.
+  # The algorithm defines which hash method is used to generate the token. Typically sha1 is only supported.
+  # You should check your TOTP application for which methods it supports. Some ignore the algorithm all together,
+  # and just generate invalid TOTP's.
+  algorithm: sha1
 
 # Duo Push API
 #

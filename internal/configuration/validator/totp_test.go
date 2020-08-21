@@ -19,6 +19,7 @@ func TestShouldSetDefaultTOTPValues(t *testing.T) {
 	assert.Equal(t, "Authelia", config.Issuer)
 	assert.Equal(t, *schema.DefaultTOTPConfiguration.Skew, *config.Skew)
 	assert.Equal(t, schema.DefaultTOTPConfiguration.Period, config.Period)
+	assert.Equal(t, schema.DefaultTOTPConfiguration.Algorithm, config.Algorithm)
 }
 
 func TestShouldRaiseErrorWhenInvalidTOTPMinimumValues(t *testing.T) {
@@ -31,6 +32,16 @@ func TestShouldRaiseErrorWhenInvalidTOTPMinimumValues(t *testing.T) {
 	}
 	ValidateTOTP(&config, validator)
 	assert.Len(t, validator.Errors(), 2)
-	assert.EqualError(t, validator.Errors()[0], "TOTP Period must be 1 or more")
-	assert.EqualError(t, validator.Errors()[1], "TOTP Skew must be 0 or more")
+	assert.EqualError(t, validator.Errors()[0], "TOTP Period must be 1 or more but -5 was defined")
+	assert.EqualError(t, validator.Errors()[1], "TOTP Skew must be 0 or more but -1 was defined")
+}
+
+func TestShouldRaiseErrorWhenInvalidTOTPAlgorithmValue(t *testing.T) {
+	validator := schema.NewStructValidator()
+	config := schema.TOTPConfiguration{
+		Algorithm: "sha556",
+	}
+	ValidateTOTP(&config, validator)
+	assert.Len(t, validator.Errors(), 1)
+	assert.EqualError(t, validator.Errors()[0], "TOTP Algorithm must be one of sha1, sha256, or sha512 but sha556 was defined")
 }
